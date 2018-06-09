@@ -7,8 +7,8 @@ public class LifeGame : MonoBehaviour {
 
 	// Use this for initialization
 	public Image image;
-	private int [ , ] LifeMap = new int[40,40];
-	private int [ , ] preLifeMap;
+	public int MapSize;
+	private int [ , ] LifeMap;
 	private ArrayList ImageMap = new ArrayList();
 	private Vector2 [] RoundCell = new Vector2[8];
 	private int distance = 0;
@@ -27,6 +27,8 @@ public class LifeGame : MonoBehaviour {
 		RoundCell[6] = new Vector2(0,-1);
 		RoundCell[7] = new Vector2(1,-1);
 
+		LifeMap = new int[MapSize,MapSize];
+
 		//初始化每个格子的生命
 		int row = LifeMap.GetLength(0);
 		int col = LifeMap.GetLength(1);
@@ -41,7 +43,6 @@ public class LifeGame : MonoBehaviour {
 				setImageColor(i,j,LifeMap[i,j]);
 			}
 		}
-		preLifeMap = LifeMap;
 	}
 	
 	// Update is called once per frame
