@@ -9,6 +9,7 @@ public class LifeGame : MonoBehaviour {
 	public Image image;
 	public int MapSize;
 	private int [ , ] LifeMap;
+	private int [ , ] preLifeMap;
 	private ArrayList ImageMap = new ArrayList();
 	private Vector2 [] RoundCell = new Vector2[8];
 	private int distance = 0;
@@ -16,6 +17,8 @@ public class LifeGame : MonoBehaviour {
 	private Random rNumber = new Random();
 	private float distancetime = 0.1f;
 	private float nexttime = 0f;
+	private int refreshCount = 0;
+	private bool isDone = false;
 	void Start () {
 		//定义cell四周的向量
 		RoundCell[0] = new Vector2(-1,1);
@@ -28,7 +31,7 @@ public class LifeGame : MonoBehaviour {
 		RoundCell[7] = new Vector2(1,-1);
 
 		LifeMap = new int[MapSize,MapSize];
-
+		preLifeMap = new int[MapSize,MapSize];
 		//初始化每个格子的生命
 		int row = LifeMap.GetLength(0);
 		int col = LifeMap.GetLength(1);
@@ -38,7 +41,7 @@ public class LifeGame : MonoBehaviour {
 			{
 				LifeMap[i,j] = Random.Range(0,2);
 
-				Debug.Log(i+"行"+j+"列得到的随机数："+LifeMap[i,j]);  
+				//Debug.Log(i+"行"+j+"列得到的随机数："+LifeMap[i,j]);  
 				createImage(i,j);
 				setImageColor(i,j,LifeMap[i,j]);
 			}
@@ -47,7 +50,21 @@ public class LifeGame : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		if(isDone)
+		{
+			return;
+		}
+
 		updateLifeMap();
+		if (!compareList(preLifeMap,LifeMap))
+		{
+			refreshCount++;
+		}
+		else
+		{
+			isDone = true;
+			Debug.Log(MapSize+"*"+MapSize+"生命游戏的寿命为："+refreshCount+"代");
+		}
 	}
 	
 	bool compareList(int [ , ] preLifeMap,int [ , ] curLifeMap)
@@ -60,6 +77,7 @@ public class LifeGame : MonoBehaviour {
 			{
 				if(preLifeMap[i,j]!=curLifeMap[i,j])
 				{
+					preLifeMap[i,j]=curLifeMap[i,j];
 					return false;
 				}
 			}
