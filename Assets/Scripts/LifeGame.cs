@@ -13,9 +13,7 @@ public class LifeGame : MonoBehaviour {
 	private ArrayList ImageMap = new ArrayList();
 	private Vector2 [] RoundCell = new Vector2[8];
 	private int distance = 0;
-	private int CellLife = 10;
-	private Random rNumber = new Random();
-	private float distancetime = 0.1f;
+	public float distancetime = 1f;
 	private float nexttime = 0f;
 	private int refreshCount = 0;
 	private bool isDone = false;
@@ -50,20 +48,28 @@ public class LifeGame : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if(isDone)
+		if(nexttime < distancetime)
 		{
-			return;
-		}
-
-		updateLifeMap();
-		if (!compareList(preLifeMap,LifeMap))
-		{
-			refreshCount++;
+			nexttime += Time.deltaTime;
 		}
 		else
 		{
-			isDone = true;
-			Debug.Log(MapSize+"*"+MapSize+"生命游戏的寿命为："+refreshCount+"代");
+			nexttime = 0;
+			if(isDone)
+			{
+				return;
+			}
+
+			updateLifeMap();
+			if (!compareList(preLifeMap,LifeMap))
+			{
+				refreshCount++;
+			}
+			else
+			{
+				isDone = true;
+				Debug.Log(MapSize+"*"+MapSize+"生命游戏的寿命为："+refreshCount+"代");
+			}
 		}
 	}
 	
